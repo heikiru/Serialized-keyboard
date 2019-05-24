@@ -1,6 +1,7 @@
 import java.io.File;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
+import java.util.NoSuchElementException;
 import java.util.Scanner;
 
 public class SerializedFile {
@@ -10,17 +11,31 @@ public class SerializedFile {
     File ser;
 
     public void createFile() { // Responsible for creating file. Verifies if it exists!
-        System.out.println("Choose a place to save your progress! ");
+        System.out.println("Choose a place to save your progress ");
         String path = analysePath(scan.nextLine()); // Gets path
-        ser = new File(ser);
+        ser = new File(path);
     }
 
     public void recordProgress(){
-        SetClass objForHere = new SetClass();
-        if(ser.exists() {
-            Sytem.out.printf();
-        } else {
+        SetClass setter = new SetClass();
+        if(enterPressed){
+            if(ser.exists()){
+                try {
+                    while(scan.hasNext()) {
+                        setter.setWords(scan.next());
+                    }
+                } catch (NoSuchElementException nsee){
+                    System.err.println("CANNOT USE ELEMENT WRITTEN");
+                }
+            } else {
+                System.err.println("CANNOT ACCESS FILE. PLEASE CREATE ONE");
+            }
+        }
+    }
 
+    public void closeFile(){
+        if(ser != null){
+            ser.close();
         }
     }
 
