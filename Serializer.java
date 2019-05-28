@@ -20,7 +20,7 @@ public class Serializer {
         try {
             dataInput = new DataInput(frame.get_Whole_textArea);
             output.writeObject(dataInput);
-        } catch (IOException ioexc) {
+        } catch (IOException ioe) {
             System.err.println("ERROR WRITING TO FILE.");
             return;
         }
@@ -30,7 +30,7 @@ public class Serializer {
         try {
             if (output != null)
                 output.close();
-        } catch (IOException exc) {
+        } catch (IOException ioe) {
             System.err.println("ERROR CLOSING FILE.");
             System.exit(1);
         }
