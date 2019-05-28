@@ -8,6 +8,10 @@ public class DataInput implements Serializable {
         this.whatsWritten = "";
     }
 
+    public DataInput(String s){
+        setWhatsWritten(s);
+    }
+
     public void setWhatsWritten(String s){
         whatsWritten = s;
     }
