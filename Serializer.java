@@ -17,10 +17,22 @@ public class Serializer {
 
     void addRecord(){
         DataInput dataInput;
-        String written = frame.getTextArea().getText();
+        try {
+            dataInput = new DataInput(frame.get_Whole_textArea);
+            output.writeObject(dataInput);
+        } catch (IOException ioexc) {
+            System.err.println("ERROR WRITING TO FILE.");
+            return;
+        }
     }
 
     void closeFile(){
-
+        try {
+            if (output != null)
+                output.close();
+        } catch (IOException exc) {
+            System.err.println("ERROR CLOSING FILE.");
+            System.exit(1);
+        }
     }
 }
