@@ -7,12 +7,19 @@ import java.awt.Dimension;
 import java.awt.Color;
 import java.awt.Font;
 import javax.swing.*;
+import java.awt.event.KeyAdapter;
+import java.awt.event.KeyEvent;
 
 public class Frame extends JFrame{
 
 	private JPanel panelTextArea, panelText, panelTeclas;
 	private JTextArea textArea;
 	private JLabel pangramaText, pontuacao;
+	private boolean enterPressed;
+
+	public String get_Whole_textArea(){
+		if(enterPressed) { return textArea.getText(); }
+	}
 
 	public Frame(){
 		super("Aplicativo de Digitação");
@@ -51,6 +58,13 @@ public class Frame extends JFrame{
 		add(panelTeclas);
 
 	}
+
+	private class KeyHandler implements KeyAdapter {
+        public void keyPressed(KeyEvent e){
+            if (e.getKeyCode() == 13) // Enter-key
+                enterPressed = true;
+        }
+    }
 
 	public static void main(String args[]){
 		Frame f = new Frame();
