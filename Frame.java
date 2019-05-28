@@ -28,13 +28,18 @@ public class Frame extends JFrame{
 		JMenu testePangrama = new JMenu("Teste Pangrama");
 		testePangrama.setMnemonic('T');
 		JMenu historico = new JMenu("Histórico");
-		testePangrama.setMnemonic('H');
-
+		historico.setMnemonic('H');
+		//
+		JMenuItem feature = new JMenuItem("Jogo");
+		feature.setMnemonic('J');
+		//
 		JMenuBar bar = new JMenuBar();
 		setJMenuBar(bar);
 		bar.add(testePangrama);
 		bar.add(historico);
-
+		//
+		bar.add(feature);
+		//
 		panelTextArea = new JPanel( new BorderLayout() );
 		panelTextArea.setPreferredSize(new Dimension(900, 200));
 		panelTextArea.add(new JTextArea(" "), BorderLayout.CENTER);
