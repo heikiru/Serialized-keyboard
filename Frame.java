@@ -5,26 +5,49 @@ import java.awt.GridBagConstraints;
 import java.awt.Component;
 import java.awt.Dimension;
 import java.awt.Color;
+import java.awt.Font;
 import javax.swing.*;
 
 public class Frame extends JFrame{
 
 	private JPanel panelTextArea, panelText, panelTeclas;
 	private JTextArea textArea;
+	private JLabel pangramaText, pontuacao;
 
 	public Frame(){
 		super("Aplicativo de Digitação");
 		setLayout(new FlowLayout());
 
+		JMenu testePangrama = new JMenu("Teste Pangrama");
+		testePangrama.setMnemonic('T');
+		JMenu historico = new JMenu("Histórico");
+		testePangrama.setMnemonic('H');
+
+		JMenuBar bar = new JMenuBar();
+		setJMenuBar(bar);
+		bar.add(testePangrama);
+		bar.add(historico);
+
 		panelTextArea = new JPanel( new BorderLayout() );
-		panelTextArea.setPreferredSize(new Dimension(550, 200));
+		panelTextArea.setPreferredSize(new Dimension(900, 200));
 		panelTextArea.add(new JTextArea(" "), BorderLayout.CENTER);
 		add(panelTextArea);
 
+		panelText = new JPanel( new FlowLayout(FlowLayout.LEFT) );
+		panelText.setPreferredSize(new Dimension(900, 100));
+		panelText.add(Box.createVerticalStrut(150));
+		pangramaText = new JLabel("Label para o pangrama");
+		pangramaText.setFont(new Font(pangramaText.getName(), Font.PLAIN, 18));
+		pangramaText.setPreferredSize(new Dimension(450, 20));
+		panelText.add(pangramaText);
+		pontuacao = new JLabel("Pontuação");
+		pontuacao.setFont(new Font(pontuacao.getName(), Font.PLAIN, 18));
+		panelText.add(pontuacao);
+		add(panelText);
+
 		
 		panelTeclas = new PanelTeclas();
-		panelTeclas.setPreferredSize(new Dimension(900, 900));
-		panelTeclas.setBackground(Color.BLACK);
+		panelTeclas.setPreferredSize(new Dimension(900, 250));
 		add(panelTeclas);
 
 	}

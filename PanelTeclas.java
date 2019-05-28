@@ -27,9 +27,13 @@ public class PanelTeclas extends JPanel{
 		c.fill = GridBagConstraints.BOTH;
     	c.weightx = 1;
     	c.weighty = 0;
+    	//System.out.println("nomesTeclas.length: "+nomesTeclas.length);
+    	//System.out.println("buttons.length: "+buttons.length+"\n");
     	
-		for(int i=0; i<=nomesTeclas.length; i++){
+		for(int i=0; i<nomesTeclas.length; i++){
+			//System.out.println("i: "+i);
 			if(i <= 13){
+				/*
 				if(i == 13){
 					buttons[i] = new JButton(nomesTeclas[i]);
 					addComponent(buttons[i], 0, (i*2), 4, 1);
@@ -37,8 +41,12 @@ public class PanelTeclas extends JPanel{
 					buttons[i] = new JButton(nomesTeclas[i]);
 					addComponent(buttons[i], 0, (i*2), 2, 1);
 				}
+				*/
+				buttons[i] = new JButton(nomesTeclas[i]);
+				addComponent(buttons[i], 0, (i*2), 2, 1);
 			}
 			if(i>13 && i<=27){
+				/*
 				int pos = i-15;
 				if(i == 14){
 					buttons[i] = new JButton(nomesTeclas[i]);
@@ -49,11 +57,29 @@ public class PanelTeclas extends JPanel{
 					addComponent(buttons[i], 1, (pos*2)+3, 2, 1);
 					//System.out.println("posMod: "+(pos*2)+3);
 				}
+				*/
+				buttons[i] = new JButton(nomesTeclas[i]);
+				addComponent(buttons[i], 1, ((i-14)*2), 2, 1);
 			}
-			addComponent(new JButton("a"), 1, 29, 1, 1);
+			if(i>27 && i<=40){
+				buttons[i] = new JButton(nomesTeclas[i]);
+				addComponent(buttons[i], 2, ((i-28)*2), 2, 1);
+			}
+			if(i>40 && i<=52){
+				System.out.println("Entrou um");
+				buttons[i] = new JButton(nomesTeclas[i]);
+				addComponent(buttons[i], 3, ((i-41)*2), 2, 1);
+
+			}
+			if(i>52){
+				System.out.println("Entrou dois");
+				buttons[i] = new JButton(nomesTeclas[i]);
+				addComponent(buttons[i], 4, ((i-44)*2), 2, 1);
+			}
+
 			
 		}
-		System.out.println(gbl.getLayoutDimensions());
+		//System.out.println(gbl.getLayoutDimensions());
 		//System.out.println(gbl.getLayoutAlignmentY(buttons[0]));
 
     }
