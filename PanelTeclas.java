@@ -1,6 +1,7 @@
 import java.awt.GridBagLayout;
 import java.awt.GridBagConstraints;
 import java.awt.Component;
+import java.awt.Color;
 import javax.swing.JPanel;
 import javax.swing.JButton;
 
@@ -12,12 +13,15 @@ public class PanelTeclas extends JPanel{
 		"[", "]", "\\", "Caps", "A", "S", "D", "F", "G", "H", "J", "K", "L", ":", "*",
 		"Enter", "Shift", "Z", "X", "C", "V", "B", "N", "M", ",", ".", "?", "^", " ", "<",
 		"v", ">"};
+	private Teclas[] teclas;
 	private JButton[] buttons;
     private GridBagConstraints c;
     private GridBagLayout gbl;
 
     public PanelTeclas(){
     	super();
+    	Teclas aux = new Teclas();
+    	teclas = aux.keyboardConstructor();
 
     	gbl = new GridBagLayout();
 		c = new GridBagConstraints();
@@ -66,21 +70,17 @@ public class PanelTeclas extends JPanel{
 				addComponent(buttons[i], 2, ((i-28)*2), 2, 1);
 			}
 			if(i>40 && i<=52){
-				System.out.println("Entrou um");
 				buttons[i] = new JButton(nomesTeclas[i]);
 				addComponent(buttons[i], 3, ((i-41)*2), 2, 1);
 
 			}
 			if(i>52){
-				System.out.println("Entrou dois");
 				buttons[i] = new JButton(nomesTeclas[i]);
 				addComponent(buttons[i], 4, ((i-44)*2), 2, 1);
 			}
 
 			
 		}
-		//System.out.println(gbl.getLayoutDimensions());
-		//System.out.println(gbl.getLayoutAlignmentY(buttons[0]));
 
     }
 
@@ -94,4 +94,7 @@ public class PanelTeclas extends JPanel{
 		add( component );
 	}
 
+	public void changeBackground(int vk){
+		buttons[teclas.getIDbyVk(vk)].setBackground(Color.RED);
+	}
 }
