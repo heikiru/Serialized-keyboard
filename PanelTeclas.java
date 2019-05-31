@@ -95,8 +95,8 @@ public class PanelTeclas extends JPanel{
     	gbl.setConstraints( component, c );
 		add( component );
 	}
-
-	public void changeBackground(int vk){
+  
+  public void changeBackground(int vk){
 		buttons[teclado.getIDbyVk(vk)].setBackground(Color.RED);
 	}
 
