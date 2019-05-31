@@ -9,6 +9,7 @@ import java.awt.Dimension;
 import java.awt.Color;
 import java.awt.Font;
 import javax.swing.*;
+import java.io.File;
 
 public class Frame extends JFrame{
 
@@ -38,12 +39,12 @@ public class Frame extends JFrame{
 			dataInput.setWhatsWritten(textArea.getText());
 			if (file.exists()){
 				serial.addRecord();
-				deserial.addRecord();
+				deserial.readRecord();
 			} else {
 				serial.openFile();
 				deserial.openFile();
 				serial.addRecord();
-				deserial.addRecord();
+				deserial.readRecord();
 			}
 		}
 
@@ -60,7 +61,7 @@ public class Frame extends JFrame{
 		panelTextArea = new JPanel( new BorderLayout() );
 		panelTextArea.setPreferredSize(new Dimension(900, 200));
 		textArea = new JTextArea(" ");
-		textArea.addKeyListener(new keyboardListener());
+		textArea.addKeyListener(new KeyboardListener());
 		panelTextArea.add(textArea, BorderLayout.CENTER);
 		add(panelTextArea);
 
@@ -83,7 +84,7 @@ public class Frame extends JFrame{
 
 	}
 
-		private class KeyHandler implements KeyAdapter {
+		private class KeyHandler extends KeyAdapter {
         	public void keyPressed(KeyEvent e){
             	if (e.getKeyCode() == 13) // Enter-key
               		enterPressed = true;
@@ -96,7 +97,7 @@ public class Frame extends JFrame{
 			f.setVisible(true);
 		}
 
-		private class keyboardListener implements KeyListener{
+		private class KeyboardListener implements KeyListener{
 
 			public void keyTyped(KeyEvent e){}
 
