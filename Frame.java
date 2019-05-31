@@ -12,7 +12,8 @@ import javax.swing.*;
 
 public class Frame extends JFrame{
 
-	private JPanel panelTextArea, panelText, panelTeclas;
+	private JPanel panelTextArea, panelText;
+	private PanelTeclas panelTeclas;
 	private JTextArea textArea;
 	private JLabel pangramaText, pontuacao;
 
@@ -63,14 +64,6 @@ public class Frame extends JFrame{
 		f.setVisible(true);
 	}
 
-	public Teclas[] keyboardConstructor(){
-		Teclas[] allTeclas = new Teclas[nomesTeclas.length];
-		for(int i=0; i<nomesTeclas.length; i++){
-			allTeclas[i] = new Teclas(i, nomesTeclas[i], vkTeclas[i]);
-		}
-		return allTeclas;
-	}
-
 	private class keyboardListener implements KeyListener{
 
 	public void keyTyped(KeyEvent e){
@@ -78,12 +71,14 @@ public class Frame extends JFrame{
 	}
 
 	public void keyPressed(KeyEvent e){
-		//System.out.println(e.getKeyChar()+" "+e.getKeyCode()+" "+KeyEvent.getKeyText(e.getKeyCode()));
+		System.out.println(e.getKeyChar()+" "+e.getKeyCode()+" "+KeyEvent.getKeyText(e.getKeyCode()));
+
+		panelTeclas.changeBackground(e.getKeyCode());
 
 	}
 
 	public void keyReleased(KeyEvent e){
-		
+		panelTeclas.changeBack(e.getKeyCode());
 	}
 }
 
