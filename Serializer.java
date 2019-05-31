@@ -18,7 +18,7 @@ public class Serializer {
     void addRecord(){
         DataInput dataInput;
         try {
-            dataInput = new DataInput(frame.get_Whole_textArea);
+            dataInput = new DataInput(frame.get_Whole_textArea());
             output.writeObject(dataInput);
         } catch (IOException ioe) {
             System.err.println("ERROR WRITING TO FILE.");
