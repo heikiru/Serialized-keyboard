@@ -16,10 +16,36 @@ public class Frame extends JFrame{
 	private PanelTeclas panelTeclas;
 	private JTextArea textArea;
 	private JLabel pangramaText, pontuacao;
+	private File file = new File(); // Still needs to be finished
+	private DataInput dataInput;
+	private Serializer serial;
+	private Deserializer deserial;
+	private boolean enterPressed;
+
+	public JTextArea getTextArea(){
+		return textArea;
+	}
 
 	public Frame(){
 		super("Aplicativo de Digitação");
 		setLayout(new FlowLayout());
+
+		dataInput = new DataInput();
+
+		if (enterPressed) {
+			// Verifies if the file exists.
+			// If not, will create one with the openFile() method!
+			dataInput.setWhatsWritten(textArea.getText());
+			if (file.exists()){
+				serial.addRecord();
+				deserial.addRecord();
+			} else {
+				serial.openFile();
+				deserial.openFile();
+				serial.addRecord();
+				deserial.addRecord();
+			}
+		}
 
 		JMenu testePangrama = new JMenu("Teste Pangrama");
 		testePangrama.setMnemonic('T');
@@ -57,29 +83,30 @@ public class Frame extends JFrame{
 
 	}
 
-	public static void main(String args[]){
-		Frame f = new Frame();
-		f.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		f.setSize(1000, 1000);
-		f.setVisible(true);
-	}
+		private class KeyHandler implements KeyAdapter {
+        	public void keyPressed(KeyEvent e){
+            	if (e.getKeyCode() == 13) // Enter-key
+              		enterPressed = true;
+        	}
+		}
+		public static void main(String args[]){
+			Frame f = new Frame();
+			f.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+			f.setSize(1000, 1000);
+			f.setVisible(true);
+		}
 
-	private class keyboardListener implements KeyListener{
+		private class keyboardListener implements KeyListener{
 
-	public void keyTyped(KeyEvent e){
+			public void keyTyped(KeyEvent e){}
 
-	}
+			public void keyPressed(KeyEvent e){
+				System.out.println(e.getKeyChar()+" "+e.getKeyCode()+" "+KeyEvent.getKeyText(e.getKeyCode()));
+				panelTeclas.changeBackground(e.getKeyCode());
+			}
 
-	public void keyPressed(KeyEvent e){
-		System.out.println(e.getKeyChar()+" "+e.getKeyCode()+" "+KeyEvent.getKeyText(e.getKeyCode()));
-
-		panelTeclas.changeBackground(e.getKeyCode());
-
-	}
-
-	public void keyReleased(KeyEvent e){
-		panelTeclas.changeBack(e.getKeyCode());
-	}
-}
-
+			public void keyReleased(KeyEvent e){
+				panelTeclas.changeBack(e.getKeyCode());
+			}
+		}
 }
