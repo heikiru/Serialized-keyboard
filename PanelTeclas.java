@@ -10,8 +10,8 @@ public class PanelTeclas extends JPanel{
 	private final String[] nomesTeclas = {"~", "1", "2", "3", "4", "5", "6", "7", "8", "9",
 		"0", "-", "+", "Backspace", "Tab", "Q", "W", "E", "R", "T", "Y", "U", "I", "O", "P",
 		"[", "]", "\\", "Caps", "A", "S", "D", "F", "G", "H", "J", "K", "L", ":", "*",
-		"Enter", "Shift", "Z", "X", "C", "V", "B", "N", "M", ",", ".", "?", "↑", " ", "←",
-		"↓", "→"};
+		"Enter", "Shift", "Z", "X", "C", "V", "B", "N", "M", ",", ".", "?", "^", " ", "<",
+		"v", ">"};
 	private JButton[] buttons;
     private GridBagConstraints c;
     private GridBagLayout gbl;
