@@ -18,7 +18,10 @@ public class Frame extends JFrame{
 	private boolean enterPressed;
 
 	public String get_Whole_textArea(){
-		if(enterPressed) { return textArea.getText(); }
+		String temp = "";
+		if(enterPressed) { temp = textArea.getText(); }
+		return temp; 
+		// Maybe trying to change it later. Could this be better inside another method?
 	}
 
 	public Frame(){
