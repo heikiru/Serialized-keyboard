@@ -15,4 +15,8 @@ public class DataInput implements Serializable {
     public void setWhatsWritten(String s){
         whatsWritten = s;
     }
+    
+    public String getWhatsWritten() {
+	    return whatsWritten;
+	}
 }
