@@ -1,68 +1,115 @@
+package hey;
+
 import java.awt.FlowLayout;
 import java.awt.BorderLayout;
 import java.awt.GridBagLayout;
 import java.awt.GridBagConstraints;
-import java.awt.event.KeyListener;
-import java.awt.event.KeyEvent;
 import java.awt.Component;
 import java.awt.Dimension;
 import java.awt.Color;
 import java.awt.Font;
 import javax.swing.*;
-import java.io.File;
+
+import java.awt.event.ItemEvent;
+import java.awt.event.ItemListener;
+import java.awt.event.KeyAdapter;
+import java.awt.event.KeyEvent;
 
 public class Frame extends JFrame{
 
-	private JPanel panelTextArea, panelText;
-	private PanelTeclas panelTeclas;
+	private JPanel panelTextArea, panelText, panelTeclas;
 	private JTextArea textArea;
 	private JLabel pangramaText, pontuacao;
-	private File file = new File(); // Still needs to be finished
-	private DataInput dataInput;
-	private Serializer serial;
-	private Deserializer deserial;
 	private boolean enterPressed;
-
-	public JTextArea getTextArea(){
-		return textArea;
+	private JRadioButton[] pangramaButton;
+	private JButton jogoButton;
+	private ButtonGroup pangramaGroup;
+	private Pangrama[] pangrama;
+	private String[] pan;
+	private StringToChar sc;
+	private RadioButtonHandler pangramaButtonHandler;
+	private Pangrama selectedPan;
+	
+	
+	
+	
+	
+	public String get_Whole_textArea(){
+		String temp = "";
+		if(enterPressed) { temp = textArea.getText(); }
+		return temp; 
+		// Maybe trying to change it later. Could this be better inside another method?
+	}
+	public Pangrama getSelectedPan() {
+		return selectedPan;
 	}
 
 	public Frame(){
 		super("Aplicativo de Digitação");
 		setLayout(new FlowLayout());
 
-		dataInput = new DataInput();
-
-		if (enterPressed) {
-			// Verifies if the file exists.
-			// If not, will create one with the openFile() method!
-			dataInput.setWhatsWritten(textArea.getText());
-			if (file.exists()){
-				serial.addRecord();
-				deserial.readRecord();
-			} else {
-				serial.openFile();
-				deserial.openFile();
-				serial.addRecord();
-				deserial.readRecord();
-			}
-		}
-
 		JMenu testePangrama = new JMenu("Teste Pangrama");
 		testePangrama.setMnemonic('T');
 		JMenu historico = new JMenu("Histórico");
-		testePangrama.setMnemonic('H');
-
+		historico.setMnemonic('H');
+		//
+		JMenuItem feature = new JMenuItem("Jogo");
+		feature.setMnemonic('J');
+		//
 		JMenuBar bar = new JMenuBar();
 		setJMenuBar(bar);
 		bar.add(testePangrama);
 		bar.add(historico);
+		//
+		bar.add(feature);
+		//
+		
 
+		pangramaGroup = new ButtonGroup();
+			      
+	      sc = new StringToChar();
+	      pangrama = new Pangrama[5];
+	      pan = new String[5];
+	      pan[0]= "Um pequeno	jabuti xereta viu dez cegonhas felizes.";
+	      pan[1]= "Quem traz CD, LP, fax, engov e whisky JB?";
+	      pan[2]=	"Gazeta publica hoje breve nota de faxina na quermesse.";
+	      pan[3]= "Jovem craque belga prediz falhas no xote.";
+	      pan[4]= "Bancos fúteis pagavam-lhe queijo, whisky e xadrez.";
+	  	
+	  	for(int i=0; i<pan.length; i++) {
+	  		pangrama[i]= new Pangrama(sc.stringToChar(pan[i]),0);
+	  	}
+	  	
+	  	pangramaButtonHandler = new RadioButtonHandler();
+		pangramaButton = new JRadioButton[pan.length];
+	      
+	      for(int i=0; i<pan.length; i++) {
+	    	  pangramaButton[i] = new JRadioButton(pan[i]);
+	    	  pangramaButton[i].setMaximumSize(new Dimension(95,25));
+	    	  pangramaGroup.add(pangramaButton[i]);
+	    	  pangramaButton[i].addItemListener(pangramaButtonHandler);
+	      }
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		jogoButton = new JButton();
+		
+		
+		//
 		panelTextArea = new JPanel( new BorderLayout() );
 		panelTextArea.setPreferredSize(new Dimension(900, 200));
-		textArea = new JTextArea(" ");
-		textArea.addKeyListener(new KeyboardListener());
-		panelTextArea.add(textArea, BorderLayout.CENTER);
+		panelTextArea.add(new JTextArea(" "), BorderLayout.CENTER);
 		add(panelTextArea);
 
 		panelText = new JPanel( new FlowLayout(FlowLayout.LEFT) );
@@ -81,33 +128,28 @@ public class Frame extends JFrame{
 		panelTeclas = new PanelTeclas();
 		panelTeclas.setPreferredSize(new Dimension(900, 250));
 		add(panelTeclas);
-
+		
+		
 	}
 
-		private class KeyHandler extends KeyAdapter {
-        	public void keyPressed(KeyEvent e){
-            	if (e.getKeyCode() == 13) // Enter-key
-              		enterPressed = true;
-        	}
-		}
-		public static void main(String args[]){
-			Frame f = new Frame();
-			f.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-			f.setSize(1000, 1000);
-			f.setVisible(true);
-		}
+//	private class KeyHandler implements KeyAdapter {
+//        public void keyPressed(KeyEvent e){
+//            if (e.getKeyCode() == 13) // Enter-key
+//                enterPressed = true;
+//        }
+//    }
+	
+	 private class RadioButtonHandler implements ItemListener{
+			@Override
+			public void itemStateChanged(ItemEvent e) {
+								
+				for (int i = 0; i < pangramaButton.length; i++) {
+					if(pangramaButton[i].isSelected()) {
+						selectedPan = pangrama[i];
+					}
+					
+				}
 
-		private class KeyboardListener implements KeyListener{
-
-			public void keyTyped(KeyEvent e){}
-
-			public void keyPressed(KeyEvent e){
-				System.out.println(e.getKeyChar()+" "+e.getKeyCode()+" "+KeyEvent.getKeyText(e.getKeyCode()));
-				panelTeclas.changeBackground(e.getKeyCode());
 			}
-
-			public void keyReleased(KeyEvent e){
-				panelTeclas.changeBack(e.getKeyCode());
-			}
-		}
+	}
 }
