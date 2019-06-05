@@ -21,7 +21,7 @@ public class Frame extends JFrame{
 	private JPanel panelTextArea, panelText, panelTotal, panelHistorico, panelJogo;
 	private PanelTeclas panelTeclas;
 	private JTextArea textArea;
-	private JLabel pangramaText, pontuacao;
+	private JLabel pangramaText, pontuacao, seta, labelPontJogo;;
 	private JRadioButton[] pangramaButton;
 	private JButton[] jogoButton;
 	private ButtonGroup pangramaGroup;
@@ -34,6 +34,9 @@ public class Frame extends JFrame{
 	private Deserializer deserial = new Deserializer();
 	private Serializer serial = new Serializer();
 	private JLabel historyLabel;
+	private Sort s;
+
+	private int pontJogo;
 
 	public JTextArea get_Whole_textArea(){
 		return textArea;
@@ -91,7 +94,7 @@ public class Frame extends JFrame{
 	  		pangrama[i]= new Pangrama(sc.stringToChar(pan[i]),0);
 	  	}
 	  	
-	  	pangramaButtonHandler = new RadioButtonHandler();
+	  	RadioButtonHandler pangramaButtonHandler = new RadioButtonHandler();
 		pangramaButton = new JRadioButton[pan.length];
 		Box box = Box.createVerticalBox();
 	      
@@ -126,12 +129,15 @@ public class Frame extends JFrame{
 		
 		tabbedPane.addTab("Historico", null, panelHistorico);
 	
-		Sort s = new Sort();
+		s = new Sort();
+		pontJogo = 0;
 		JPanel p = new JPanel(new FlowLayout());
 		p.setSize(1000,1000);
 		
-		JLabel seta = new JLabel(s.random_char() + "");
+		seta = new JLabel(s.random_char());
 		JPanel panelSeta= new JPanel();
+		labelPontJogo = new JLabel("0");
+		p.add(labelPontJogo);
 		panelSeta.add(seta);
 		
 		panelJogo = new JPanel(new BorderLayout());
@@ -140,9 +146,13 @@ public class Frame extends JFrame{
 		jogoButton = new JButton[4];
 		
 		jogoButton[0] = new JButton("^"); 
+		jogoButton[0].addKeyListener(new KeyboardListener());
 		jogoButton[1] = new JButton("v"); 
+		jogoButton[1].addKeyListener(new KeyboardListener());
 		jogoButton[2] = new JButton("<"); 
+		jogoButton[2].addKeyListener(new KeyboardListener());
 		jogoButton[3] = new JButton(">"); 
+		jogoButton[3].addKeyListener(new KeyboardListener());
 		
 		panelJogo.add(jogoButton[0], BorderLayout.NORTH);
 		panelJogo.add(jogoButton[1], BorderLayout.SOUTH);
@@ -159,20 +169,36 @@ public class Frame extends JFrame{
 	private class KeyboardListener extends KeyAdapter {
 		public void keyPressed(KeyEvent e){
 			if(e.getKeyCode() == KeyEvent.VK_ENTER){
-				serial.addRecord(textArea.getText());
+				//java reclamou pois método não requer argumentos
+				//serial.addRecord(textArea.getText());
+				serial.addRecord();
+			}
+			panelTeclas.changeBackground(e.getKeyCode());
+			//System.out.println(e.getKeyChar() + " " + e.getKeyCode() + " " + KeyEvent.getKeyText(e.getKeyCode()));
+			
+			if(e.getKeyCode() == 38 || e.getKeyCode() == 37 || e.getKeyCode() == 40 || e.getKeyCode() == 39){
+				String aux = "";
+				if(e.getKeyCode() == 38){ aux = "^"; }
+				if(e.getKeyCode() == 37){ aux = "<"; }
+				if(e.getKeyCode() == 40){ aux = "v"; }
+				if(e.getKeyCode() == 39){ aux = ">"; }
+
+				if(seta.getText().equals(aux)){
+					pontJogo = pontJogo+1;
+				}
+				else{
+					pontJogo = 0;
+				}
+				labelPontJogo.setText(Integer.toString(pontJogo));
+				seta.setText(s.random_char());
 			}
 		}
-	}
 
-	public void keyTyped(KeyEvent e){}
+		public void keyTyped(KeyEvent e){}
 
-	public void keyPressed(KeyEvent e){
-		System.out.println(e.getKeyChar() + " " + e.getKeyCode() + " " + KeyEvent.getKeyText(e.getKeyCode()));
-		panelTeclas.changeBackground(e.getKeyCode());
-	}
-
-	public void keyReleased(KeyEvent e){
-		panelTeclas.changeBack(e.getKeyCode());
+		public void keyReleased(KeyEvent e){
+			panelTeclas.changeBack(e.getKeyCode());
+		}
 	}
 	
 	private class RadioButtonHandler implements ItemListener{
@@ -185,9 +211,5 @@ public class Frame extends JFrame{
 				}
 			}
 		}
-	}
-
-	public static void main(String[] args){
-		Frame frame = new Frame();
 	}
 }
