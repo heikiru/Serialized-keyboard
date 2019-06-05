@@ -1,5 +1,3 @@
-package hey;
-
 import java.io.Serializable;
 
 public class DataInput implements Serializable {

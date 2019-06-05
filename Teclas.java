@@ -1,6 +1,6 @@
 public class Teclas{
 	private int id;
-	private String value;
+	private String value = "";
 	private int vkCode;
 
 	public Teclas(int i, String v, int vk){

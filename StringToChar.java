@@ -1,5 +1,3 @@
-package hey;
-
 import java.util.ArrayList;
 
 public class StringToChar {

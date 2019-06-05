@@ -1,5 +1,3 @@
-package hey;
-
 public class TecladoException extends Exception {
 	
 	private String msg;
