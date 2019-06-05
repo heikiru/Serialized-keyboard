@@ -1,16 +1,20 @@
-import javax.swing.*;
+import javax.swing.Box;
+import javax.swing.JLabel;
+import javax.swing.JPanel;
+import javax.swing.JTextArea;
+
+import java.awt.Color;
 import java.util.ArrayList;
 
 public class PanelHistorico extends JPanel {
-
-    private JLabel label;
-
+    JTextArea text = new JTextArea();
     public PanelHistorico() {
-        label = new JLabel();
-        add(label);
+        text.setBackground(new Color(0, 0, 0, 0));
+        text.setEditable(false);
+        add(text);
     }
 
     public void update(ArrayList<String> list) {
-        label.setText(String.join("\n", list));
+        text.setText(String.join("\n", list));
     }
 }

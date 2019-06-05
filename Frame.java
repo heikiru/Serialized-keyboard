@@ -5,6 +5,7 @@ import java.awt.GridBagConstraints;
 import java.awt.event.KeyListener;
 import java.io.FileNotFoundException;
 import java.util.ArrayList;
+import java.util.List;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.ItemEvent;
@@ -18,7 +19,7 @@ import java.awt.Font;
 import javax.swing.*;
 
 public class Frame extends JFrame{
-
+	ArrayList<String> lines = new ArrayList<>();
 	private JPanel panelTextArea, panelText, panelTotal, panelJogo;
 	private PanelTeclas panelTeclas;
 	private JTextArea textArea;
@@ -33,6 +34,7 @@ public class Frame extends JFrame{
 	private int points;
 	private String text;
 	private JLabel historyLabel;
+	private PanelHistorico panelHistorico;
 	private Sort s;
 
 	private int pontJogo;
@@ -130,11 +132,12 @@ public class Frame extends JFrame{
 		JTabbedPane tabbedPane = new JTabbedPane(); // create JTabbedPane
 		tabbedPane.addTab("Teste Pangrama", null, panelTotal, "Primeiro Panel");
 		
-		PanelHistorico panelHistorico = new PanelHistorico();
+		panelHistorico = new PanelHistorico();
 		
 		try {
 			Deserializer deserial = new Deserializer();
-			panelHistorico.update(deserial.readRecords());
+			lines.addAll(deserial.readRecords());
+			panelHistorico.update(lines);
 			deserial.closeFile();
 		} catch (FileNotFoundException e) {
 			System.out.println("ok: " + e.getMessage());
@@ -185,6 +188,8 @@ public class Frame extends JFrame{
 				Serializer serial = new Serializer();
 				serial.addRecord(textArea.getText());
 				serial.closeFile();
+				lines.addAll(List.of(textArea.getText().split("\n")));
+				panelHistorico.update(lines);
 			}
 			panelTeclas.changeBackground(e.getKeyCode());
 			//System.out.println(e.getKeyChar() + " " + e.getKeyCode() + " " + KeyEvent.getKeyText(e.getKeyCode()));
