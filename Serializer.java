@@ -5,20 +5,19 @@ import java.io.ObjectOutputStream;
 public class Serializer {
     
     private ObjectOutputStream output;
-    private Frame frame;
 
-    void openFile(){
+    public Serializer() {
         try {
-            output = new ObjectOutputStream(new FileOutputStream("data_input.ser"));
+            output = new ObjectOutputStream(new FileOutputStream("data_input.ser", true));
         } catch (IOException ioe){
             System.err.println("ERROR OPENING FILE.");
         }   
     }
 
-    void addRecord(){
+    void addRecord(String text) {
         DataInput dataInput;
         try {
-            dataInput = new DataInput(frame.get_Whole_textArea().getText());
+            dataInput = new DataInput(text);
             output.writeObject(dataInput);
         } catch (IOException ioe) {
             System.err.println("ERROR WRITING TO FILE.");
@@ -28,8 +27,7 @@ public class Serializer {
 
     void closeFile(){
         try {
-            if (output != null)
-                output.close();
+            output.close();
         } catch (IOException ioe) {
             System.err.println("ERROR CLOSING FILE.");
             System.exit(1);

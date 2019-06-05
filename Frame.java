@@ -28,12 +28,11 @@ public class Frame extends JFrame{
 	private Pangrama[] pangrama;
 	private String[] pan;
 	private StringToChar sc;
-	private RadioButtonHandler pangramaButtonHandler;
 	private Pangrama selectedPan;
 	private int points;
 	private String text;
-	private Deserializer deserial;
-	private Serializer serial;
+	private Deserializer deserial = new Deserializer();
+	private Serializer serial = new Serializer();
 	private JLabel historyLabel;
 
 	public JTextArea get_Whole_textArea(){
@@ -160,8 +159,7 @@ public class Frame extends JFrame{
 	private class KeyboardListener extends KeyAdapter {
 		public void keyPressed(KeyEvent e){
 			if(e.getKeyCode() == KeyEvent.VK_ENTER){
-				serial.openFile();
-				serial.addRecord();
+				serial.addRecord(textArea.getText());
 			}
 		}
 	}
