@@ -14,10 +14,9 @@ public class Main {
 		String p = f.get_Whole_textArea().getText();
 		
 		
-		ArrayList<Character> teste= sc.stringToChar(p);
+		ArrayList<Character> teste = sc.stringToChar(p);
 		
 		Pangrama pan = f.getSelectedPan();
-		
 		pan.checkPangrama(teste);
 		System.out.println(pan.getErros());
 

@@ -3,6 +3,7 @@ import java.awt.BorderLayout;
 import java.awt.GridBagLayout;
 import java.awt.GridBagConstraints;
 import java.awt.event.KeyListener;
+import java.io.FileNotFoundException;
 import java.util.ArrayList;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -18,7 +19,7 @@ import javax.swing.*;
 
 public class Frame extends JFrame{
 
-	private JPanel panelTextArea, panelText, panelTotal, panelHistorico, panelJogo;
+	private JPanel panelTextArea, panelText, panelTotal, panelJogo;
 	private PanelTeclas panelTeclas;
 	private JTextArea textArea;
 	private JLabel pangramaText, pontuacao, seta, labelPontJogo;;
@@ -31,8 +32,6 @@ public class Frame extends JFrame{
 	private Pangrama selectedPan;
 	private int points;
 	private String text;
-	private Deserializer deserial = new Deserializer();
-	private Serializer serial = new Serializer();
 	private JLabel historyLabel;
 	private Sort s;
 
@@ -81,29 +80,35 @@ public class Frame extends JFrame{
 		
 		pangramaGroup = new ButtonGroup();
 	      
-			sc = new StringToChar();
-			pangrama = new Pangrama[5];
-			pan = new String[5];
-			pan[0]= "Um pequeno jabuti xereta viu dez cegonhas felizes.";
-			pan[1]= "Quem traz CD, LP, fax, engov e whisky JB?";
-			pan[2]= "Gazeta publica hoje breve nota de faxina na quermesse.";
-			pan[3]= "Jovem craque belga prediz falhas no xote.";
-			pan[4]= "Bancos futeis pagavam-lhe queijo, whisky e xadrez.";
+		sc = new StringToChar();
+		pangrama = new Pangrama[5];
+		pan = new String[] {
+			"Um pequeno jabuti xereta viu dez cegonhas felizes.",
+			"Quem traz CD, LP, fax, engov e whisky JB?",
+			"Gazeta publica hoje breve nota de faxina na quermesse.",
+			"Jovem craque belga prediz falhas no xote.",
+			"Bancos futeis pagavam-lhe queijo, whisky e xadrez.",
+		};
 	  	
-	  	for(int i=0; i<pan.length; i++) {
+	  	for(int i = 0; i < pan.length; i++) {
 	  		pangrama[i]= new Pangrama(sc.stringToChar(pan[i]),0);
 	  	}
 	  	
-	  	RadioButtonHandler pangramaButtonHandler = new RadioButtonHandler();
 		pangramaButton = new JRadioButton[pan.length];
 		Box box = Box.createVerticalBox();
 	      
-      	for(int i=0; i<pan.length; i++) {
+      	for(int i = 0; i < pan.length; i++) {
 	    	  pangramaButton[i] = new JRadioButton(pan[i]);
 	    	  pangramaButton[i].setFont(new Font(pangramaButton[i].getName(), Font.PLAIN, 18));
 	    	  pangramaGroup.add(pangramaButton[i]);
 	    	  box.add(pangramaButton[i]);
-	    	  pangramaButton[i].addItemListener(pangramaButtonHandler);
+	    	  pangramaButton[i].addItemListener((e) -> {
+				for (int u = 0; u < pangramaButton.length; u++) {
+					if(pangramaButton[u].isSelected()) {
+						selectedPan = pangrama[u];
+					}
+				}
+			  });
       	}
 		
 		pangramaText = new JLabel("Label para o pangrama");
@@ -125,7 +130,15 @@ public class Frame extends JFrame{
 		JTabbedPane tabbedPane = new JTabbedPane(); // create JTabbedPane
 		tabbedPane.addTab("Teste Pangrama", null, panelTotal, "Primeiro Panel");
 		
-		panelHistorico = new JPanel();
+		PanelHistorico panelHistorico = new PanelHistorico();
+		
+		try {
+			Deserializer deserial = new Deserializer();
+			panelHistorico.update(deserial.readRecords());
+			deserial.closeFile();
+		} catch (FileNotFoundException e) {
+			System.out.println("ok: " + e.getMessage());
+		}
 		
 		tabbedPane.addTab("Historico", null, panelHistorico);
 	
@@ -143,15 +156,15 @@ public class Frame extends JFrame{
 		panelJogo = new JPanel(new BorderLayout());
 		panelJogo.setSize(new Dimension(100,100));
 		
-		jogoButton = new JButton[4];
-		
-		jogoButton[0] = new JButton("^"); 
+		jogoButton = new JButton[] {
+			new JButton("^"),
+			new JButton("v"),
+			new JButton("<"),
+			new JButton(">")
+		};
 		jogoButton[0].addKeyListener(new KeyboardListener());
-		jogoButton[1] = new JButton("v"); 
 		jogoButton[1].addKeyListener(new KeyboardListener());
-		jogoButton[2] = new JButton("<"); 
 		jogoButton[2].addKeyListener(new KeyboardListener());
-		jogoButton[3] = new JButton(">"); 
 		jogoButton[3].addKeyListener(new KeyboardListener());
 		
 		panelJogo.add(jogoButton[0], BorderLayout.NORTH);
@@ -169,9 +182,9 @@ public class Frame extends JFrame{
 	private class KeyboardListener extends KeyAdapter {
 		public void keyPressed(KeyEvent e){
 			if(e.getKeyCode() == KeyEvent.VK_ENTER){
-				//java reclamou pois método não requer argumentos
-				//serial.addRecord(textArea.getText());
-				serial.addRecord();
+				Serializer serial = new Serializer();
+				serial.addRecord(textArea.getText());
+				serial.closeFile();
 			}
 			panelTeclas.changeBackground(e.getKeyCode());
 			//System.out.println(e.getKeyChar() + " " + e.getKeyCode() + " " + KeyEvent.getKeyText(e.getKeyCode()));
@@ -198,18 +211,6 @@ public class Frame extends JFrame{
 
 		public void keyReleased(KeyEvent e){
 			panelTeclas.changeBack(e.getKeyCode());
-		}
-	}
-	
-	private class RadioButtonHandler implements ItemListener{
-		@Override
-		public void itemStateChanged(ItemEvent e) {
-							
-			for (int i = 0; i < pangramaButton.length; i++) {
-				if(pangramaButton[i].isSelected()) {
-					selectedPan = pangrama[i];
-				}
-			}
 		}
 	}
 }

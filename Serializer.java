@@ -1,6 +1,7 @@
 import java.io.IOException;
 import java.io.FileOutputStream;
 import java.io.ObjectOutputStream;
+import java.io.OutputStream;
 
 public class Serializer {
     
@@ -8,16 +9,15 @@ public class Serializer {
 
     public Serializer() {
         try {
-            output = new ObjectOutputStream(new FileOutputStream("data_input.ser", true));
+            output = new ObjectOutputStream(new FileOutputStream("data_input.ser"));
         } catch (IOException ioe){
             System.err.println("ERROR OPENING FILE.");
         }   
     }
 
     void addRecord(String text) {
-        DataInput dataInput;
         try {
-            dataInput = new DataInput(text);
+            DataInput dataInput = new DataInput(text);
             output.writeObject(dataInput);
         } catch (IOException ioe) {
             System.err.println("ERROR WRITING TO FILE.");

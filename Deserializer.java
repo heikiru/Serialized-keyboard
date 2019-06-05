@@ -1,46 +1,50 @@
+import java.util.ArrayList;
+
 import java.io.EOFException;
 import java.io.FileInputStream;
+import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.ObjectInputStream;
 
 public class Deserializer {
     private ObjectInputStream input;
-    public Deserializer() {
+    public Deserializer() throws FileNotFoundException {
         try {
             input = new ObjectInputStream(new FileInputStream("data_input.ser"));
-        } catch(IOException ioException) {
-            System.err.println("ERROR OPENING FILE.");
-        } 
+        } catch (FileNotFoundException e) {
+            throw e;
+        } catch (IOException e) {
+            System.err.println("ERROR OPENING FILE: " + e.getMessage());
+        }
     } 
 
-    public void readRecords(){
+    public ArrayList<String> readRecords() {
         DataInput dataInput;
-        System.out.printf("%-10s\n", "Text ");
 
+        ArrayList<String> list = new ArrayList<String>();
         try { 
             while (true){
-                dataInput = ( DataInput ) input.readObject();
-            System.out.printf("%-12s\n", dataInput.getWhatsWritten());
+                dataInput = (DataInput) input.readObject();
+                list.add(dataInput.getWhatsWritten());
             }
-        }
-        catch ( EOFException endOfFileException ) {
-            return; 
-        } 
-        catch ( ClassNotFoundException classNotFoundException ) {
+        } catch (ClassNotFoundException e) {
             System.err.println("UNABLE TO CREATE OBJECT.");
-        } 
-        catch ( IOException ioException ) {
-            System.err.println("ERROR DURING READING FROM FILE.");
-        } 
+            System.exit(1);
+        } catch (EOFException e) {
+            // nada
+            System.out.println("que");
+        } catch (IOException e) {
+            System.err.println("ERROR DURING READING FROM FILE: " + e.getMessage());
+            System.exit(1);
+        }
+        System.out.println("capitche?");
+        return list;
     } 
 
     public void closeFile(){
         try {
-            if (input != null)
             input.close();
-            System.exit(0);
-        } // end try
-        catch ( IOException ioException )
+        } catch ( IOException ioException )
         {
             System.err.println("ERROR CLOSING FILE.");
             System.exit(1);
